@@ -17,3 +17,8 @@ After running each client, it will print a new connection with the url in the se
 
 ### 2.2 Modifying port
 I updated both sides of the connection to use port 8080. In **server.rs** I changed TcpListener::bind("127.0.0.1:2000") to TcpListener::bind("127.0.0.1:8080"), and in **client.rs** I updated the URI from `ws://127.0.0.1:2000` to `ws://127.0.0.1:8080`. After rebuilding and re-running `cargo run --bin server` alongside each `cargo run --bin client`, the chat still functions as before. Both client and server continue to speak the WebSocket protocol (indicated by the ws:// scheme), which the `tokio-websockets` crate negotiates via an HTTP upgrade before exchanging frames. No other source files or configuration needed adjustment, since the port is only referenced in those two locations. This confirms that changing the port on both ends is sufficient to rebind the entire bi-directional WebSocket connection.
+
+### 2.3 Small changes. Add some information to client
+![](/images/image2.png)
+
+I modified the server’s broadcast format so that every message is now prefixed with `Kayla's Computer – From server [addr]: text` instead of just the raw socket address. This makes it clear that the server is relaying the chat and exactly which peer sent the original text. On the client side I added an initial welcome line `Kayla's Computer – Welcome to chat! Type a message` to confirm that I’ve successfully connected. These small changes improve readability by giving the relay a friendly hostname and ensuring you can distinguish server-forwarded messages from other output. 

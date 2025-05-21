@@ -21,7 +21,7 @@ async fn handle_connection(
                 Some(Ok(msg)) => {
                     if let Some(txt) = msg.as_text() {
                         println!("From client {addr} \"{txt}\"");
-                        let _ = bcast_tx.send(format!("[{addr}] {txt}"));
+                        let _ = bcast_tx.send(format!("Kayla's Computer - From server [{addr}]: {txt}"));
                     }
                 }
                 Some(Err(err)) => {
